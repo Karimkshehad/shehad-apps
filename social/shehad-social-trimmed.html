@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Shehad Social — شهاد سوشيال</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEDE7; --card:#FFFFFF; --text:#1D1B18; --muted:#6F6A61; --line:#E2DDD2;
+  --brand:#7C2128; --brand-soft:#F7E8E9; --teal:#0E5E5A; --teal-soft:#E2EFED; --gold:#B9852B;
+  --hover:#F5F1E9; --input:#F1EDE3; --shadow:0 1px 2px rgba(29,27,24,.08),0 4px 16px rgba(29,27,24,.06);
+  --badge:#C62828; --online:#2E9E4F; --liked:#0E5E5A;
+}
+:root[data-theme="dark"]{
+  --bg:#121416; --card:#1E2124; --text:#F2EFE8; --muted:#A39C90; --line:#2E3237;
+  --brand:#E08A90; --brand-soft:#332226; --teal:#5FC2B8; --teal-soft:#1D2E2C; --gold:#D9A94F;
+  --hover:#26292D; --input:#26292D; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --liked:#5FC2B8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]){
+    --bg:#121416; --card:#1E2124; --text:#F2EFE8; --muted:#A39C90; --line:#2E3237;
+    --brand:#E08A90; --brand-soft:#332226; --teal:#5FC2B8; --teal-soft:#1D2E2C; --gold:#D9A94F;
+    --hover:#26292D; --input:#26292D; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+    --liked:#5FC2B8;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.55}
+button,[role="button"],input,textarea,select{font-family:inherit;font-size:inherit;color:inherit}
+button,[role="button"]{min-height:36px;cursor:pointer}
+img{display:block;max-width:100%}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+svg{flex:none}
+
+/* ---------- Top bar ---------- */
+.topbar{position:sticky;top:0;z-index:60;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;gap:10px;padding:6px 14px}
+.logo{display:flex;align-items:center;gap:9px;flex:none}
+.logo-mark{width:40px;height:40px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;font-size:22px;line-height:1}
+:root[data-theme="dark"] .logo-mark{color:#1D1B18;background:var(--gold)}
+.logo-name{font-weight:700;font-size:19px;white-space:nowrap}
+.logo-name small{display:block;font-size:11px;color:var(--muted);font-weight:500;line-height:1.2}
+.searchbox{position:relative;flex:0 1 320px}
+.searchbox input{width:100%;border:0;background:var(--input);border-radius:999px;padding:9px 38px 9px 14px;min-height:40px;outline:none}
+.searchbox .sicon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search-results{position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;display:none;max-height:70vh;overflow-y:auto}
+.search-results.open{display:block}
+.search-results .sr-item{display:flex;align-items:center;gap:10px;padding:9px 12px;width:100%;background:none;border:0;text-align:right}
+.search-results .sr-item:hover{background:var(--hover)}
+.search-results .sr-type{font-size:12px;color:var(--muted)}
+.search-results .sr-empty{padding:14px;color:var(--muted);text-align:center}
+.topnav{display:flex;gap:4px;margin-inline:auto}
+.topnav button{background:none;border:0;border-radius:10px;padding:6px 22px;color:var(--muted);position:relative}
+.topnav button:hover{background:var(--hover)}
+.topnav button.active{color:var(--brand)}
+.topnav button.active::after{content:"";position:absolute;bottom:-7px;right:8px;left:8px;height:3px;border-radius:3px;background:var(--brand)}
+.top-actions{display:flex;align-items:center;gap:8px;flex:none;margin-inline-start:auto}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--input);display:grid;place-items:center;position:relative;color:var(--text)}
+.icon-btn:hover{background:var(--hover)}
+.icon-btn .bdg{position:absolute;top:-2px;left:-2px;background:var(--badge);color:#fff;font-size:11px;font-weight:700;min-width:19px;height:19px;border-radius:999px;display:grid;place-items:center;padding:0 4px}
+.top-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);cursor:pointer}
+
+/* notifications dropdown */
+.notif-wrap{position:relative}
+.notif-panel{position:absolute;top:calc(100% + 10px);left:0;width:min(360px,92vw);background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:none;overflow:hidden;z-index:70}
+.notif-panel.open{display:block}
+.notif-panel h3{margin:0;padding:12px 14px 6px;font-size:16px}
+.notif-item{display:flex;gap:10px;padding:10px 14px;width:100%;background:none;border:0;text-align:right;align-items:flex-start}
+.notif-item:hover{background:var(--hover)}
+.notif-item.unread{background:var(--teal-soft)}
+.notif-item p{margin:0;font-size:14px}
+.notif-item time{font-size:12px;color:var(--muted)}
+.notif-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);margin-top:7px;flex:none}
+
+/* ---------- Layout ---------- */
+.layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:20px;padding:16px 14px 90px;align-items:start}
+.col-side{position:sticky;top:70px;display:flex;flex-direction:column;gap:14px;min-width:0}
+main{min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* avatars */
+.av{border-radius:50%;object-fit:cover;flex:none}
+.av-init{border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.c1{background:#0E5E5A}.c2{background:#7C2128}.c3{background:#B9852B}.c4{background:#3E5C50}.c5{background:#5B4A8A}.c6{background:#8A5A2B}
+
+/* side menu */
+.side-card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:10px}
+.side-user{display:flex;align-items:center;gap:11px;padding:8px;border-radius:10px;width:100%;background:none;border:0;text-align:right}
+.side-user:hover{background:var(--hover)}
+.side-user b{font-size:15px}
+.side-user span{display:block;font-size:12.5px;color:var(--muted)}
+.menu-item{display:flex;align-items:center;gap:11px;padding:9px 8px;border-radius:10px;width:100%;background:none;border:0;text-align:right;font-weight:500}
+.menu-item:hover{background:var(--hover)}
+.menu-item .mi{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--input);color:var(--brand)}
+.menu-item.active{background:var(--brand-soft);color:var(--brand)}
+.side-card h4{margin:4px 8px 8px;font-size:13px;color:var(--muted);font-weight:600}
+.mini-row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:10px;width:100%;background:none;border:0;text-align:right}
+.mini-row:hover{background:var(--hover)}
+.mini-row .grow{flex:1;min-width:0}
+.mini-row b{font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-row span{font-size:12px;color:var(--muted);display:block}
+.btn{border:0;border-radius:9px;padding:7px 14px;font-weight:600;min-height:36px}
+.btn-brand{background:var(--brand);color:#fff}
+:root[data-theme="dark"] .btn-brand{color:#1D1B18;background:var(--gold)}
+.btn-soft{background:var(--input);color:var(--text)}
+.btn-teal{background:var(--teal);color:#fff}
+.btn.on{background:var(--teal-soft);color:var(--teal)}
+.btn.sm{padding:5px 12px;min-height:32px;font-size:13.5px}
+.online-dot{width:10px;height:10px;border-radius:50%;background:var(--online);border:2px solid var(--card);margin-inline-start:-14px;margin-top:24px;z-index:1}
+.demo-note{font-size:12px;color:var(--muted);padding:2px 8px;line-height:1.6}
+.chat-cta{background:linear-gradient(135deg,#0E5E5A,#7C2128);border-radius:14px;color:#fff;padding:16px;box-shadow:var(--shadow)}
+.chat-cta h4{color:#fff;margin:0 0 4px;font-size:15px}
+.chat-cta p{margin:0 0 10px;font-size:13px;opacity:.9}
+.chat-cta button{background:#fff;color:#0E5E5A;border:0;border-radius:9px;padding:8px 16px;font-weight:700;width:100%}
+
+/* ---------- Stories ---------- */
+.stories{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{flex:0 0 106px;height:150px;border-radius:14px;position:relative;overflow:hidden;border:0;padding:0;text-align:right;box-shadow:var(--shadow);background:var(--card)}
+.story img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.story::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 55%)}
+.story .st-av{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;z-index:2}
+.story .st-av-init{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:3px solid var(--gold);z-index:2;display:grid;place-items:center;color:#fff;font-weight:700}
+.story .st-name{position:absolute;bottom:8px;right:8px;left:8px;color:#fff;font-size:12.5px;font-weight:600;z-index:2;line-height:1.35}
+.story.create{background:var(--card)}
+.story.create::after{display:none}
+.story.create img.bg{height:72%}
+.story.create .plus{position:absolute;bottom:34px;right:50%;transform:translateX(50%);width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;border:4px solid var(--card);z-index:2;font-size:20px}
+.story.create .st-name{color:var(--text);text-align:center;bottom:6px}
+
+/* ---------- Composer & posts ---------- */
+.card{background:var(--card);border-radius:14px;box-shadow:var(--shadow)}
+.composer{padding:14px}
+.composer-top{display:flex;gap:10px;align-items:flex-start}
+.composer textarea{flex:1;border:0;background:var(--input);border-radius:14px;padding:11px 14px;resize:none;min-height:46px;outline:none}
+.composer-actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--line);padding-top:10px;flex-wrap:wrap;align-items:center}
+.chip-btn{display:flex;align-items:center;gap:7px;background:none;border:0;border-radius:9px;padding:7px 12px;font-weight:600;font-size:14px}
+.chip-btn:hover{background:var(--hover)}
+.chip-btn.sel{background:var(--teal-soft);color:var(--teal)}
+.composer .publish{margin-inline-start:auto}
+.post{padding:0;overflow:hidden}
+.post-head{display:flex;align-items:center;gap:10px;padding:13px 15px 6px}
+.post-head .grow{flex:1;min-width:0}
+.post-head b{font-size:15px;display:flex;align-items:center;gap:5px}
+.post-head .meta{font-size:12.5px;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.verified{color:var(--teal);display:inline-grid}
+.post-text{padding:2px 15px 10px;font-size:15.5px;white-space:pre-wrap;word-wrap:break-word}
+.post-img{width:100%;max-height:520px;object-fit:cover}
+.post-counts{display:flex;justify-content:space-between;padding:9px 15px;font-size:13.5px;color:var(--muted);border-bottom:1px solid var(--line);margin:0 0 2px}
+.reacts{display:flex;gap:2px;align-items:center}
+.post-actions{display:flex;padding:5px 8px;position:relative}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;background:none;border:0;border-radius:9px;padding:8px 4px;font-weight:600;color:var(--muted);font-size:14.5px}
+.act-btn:hover{background:var(--hover)}
+.act-btn.liked{color:var(--liked)}
+.like-wrap{flex:1;position:relative;display:flex}
+.like-wrap .act-btn{flex:1}
+.react-picker{position:absolute;bottom:calc(100% + 2px);right:50%;transform:translateX(50%) scale(.8);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:5px 8px;display:flex;gap:4px;opacity:0;pointer-events:none;transition:.15s;z-index:5}
+.like-wrap:hover .react-picker,.like-wrap:focus-within .react-picker{opacity:1;pointer-events:auto;transform:translateX(50%) scale(1)}
+.react-picker button{background:none;border:0;font-size:23px;padding:2px 4px;min-height:36px;line-height:1}
+.react-picker button:hover{transform:scale(1.25)}
+/* Touch devices: no hover — show the reaction row openly above the Like button */
+@media (hover:none){
+  .like-wrap{flex-direction:column}
+  .react-picker{position:static;transform:none;opacity:1;pointer-events:auto;align-self:center;margin-top:2px;box-shadow:none;border:0;background:transparent;padding:0}
+  .react-picker button{font-size:21px}
+}
+.comments{padding:4px 15px 13px;display:none}
+.comments.open{display:block}
+.comment{display:flex;gap:9px;margin-top:9px;align-items:flex-start}
+.comment .bubble{background:var(--input);border-radius:13px;padding:7px 12px;flex:1;min-width:0}
+.comment .bubble b{font-size:13.5px}
+.comment .bubble p{margin:0;font-size:14px}
+.comment-form{display:flex;gap:9px;margin-top:11px;align-items:center}
+.comment-form input{flex:1;border:0;background:var(--input);border-radius:999px;padding:9px 14px;min-height:40px;outline:none}
+.post-menu-wrap{position:relative}
+.post-menu{position:absolute;top:calc(100% + 4px);left:0;background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);min-width:190px;display:none;z-index:8;overflow:hidden}
+.post-menu.open{display:block}
+.post-menu button{display:flex;width:100%;gap:9px;align-items:center;background:none;border:0;padding:10px 13px;text-align:right;font-weight:500}
+.post-menu button:hover{background:var(--hover)}
+
+/* poll */
+.poll{margin:0 15px 12px;display:flex;flex-direction:column;gap:8px}
+.poll-opt{position:relative;border:1.5px solid var(--line);border-radius:10px;padding:9px 13px;background:none;text-align:right;width:100%;overflow:hidden;font-weight:600}
+.poll-opt .fill{position:absolute;inset:0;background:var(--teal-soft);width:0;z-index:0;transition:width .4s}
+.poll-opt .lbl,.poll-opt .pct{position:relative;z-index:1}
+.poll-opt .pct{float:left;color:var(--muted)}
+.poll-opt.voted{border-color:var(--teal)}
+.poll-total{font-size:12.5px;color:var(--muted);padding:0 15px 10px}
+
+/* ---------- Views ---------- */
+.view{display:none;flex-direction:column;gap:14px}
+.view.active{display:flex}
+.profile-hero{overflow:hidden;padding:0}
+.profile-cover{width:100%;height:230px;object-fit:cover}
+.profile-id{display:flex;gap:14px;padding:0 18px;align-items:flex-end;margin-top:-46px;flex-wrap:wrap}
+.profile-id img{width:120px;height:120px;border-radius:50%;border:4px solid var(--card);object-fit:cover}
+.profile-id .grow{flex:1;min-width:200px;padding-bottom:6px}
+.profile-id h1{margin:0;font-size:24px;display:flex;gap:7px;align-items:center}
+.profile-id .handle{color:var(--muted);font-size:14px}
+.profile-stats{display:flex;gap:18px;padding:12px 18px 4px;flex-wrap:wrap}
+.profile-stats b{font-size:16px}
+.profile-stats span{color:var(--muted);font-size:13px}
+.profile-bio{padding:6px 18px 12px;font-size:14.5px}
+.profile-bio .tag{color:var(--brand);font-weight:700;letter-spacing:.4px}
+.profile-btns{display:flex;gap:8px;padding:0 18px 16px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;padding:6px 12px;border-top:1px solid var(--line);overflow-x:auto}
+.tabs button{background:none;border:0;border-radius:9px;padding:8px 16px;font-weight:600;color:var(--muted);white-space:nowrap}
+.tabs button.active{background:var(--brand-soft);color:var(--brand)}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:14px}
+.photo-grid img{width:100%;height:130px;object-fit:cover;border-radius:10px}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.gcard{overflow:hidden;padding:0}
+.gcard .gc-cover{height:110px;width:100%;object-fit:cover}
+.gcard .gc-body{padding:12px 14px 14px}
+.gcard h3{margin:0 0 3px;font-size:16px}
+.gcard p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.gcard .btn{width:100%}
+.section-title{font-size:18px;margin:2px 2px 0}
+.empty-note{padding:22px;text-align:center;color:var(--muted)}
+
+/* ---------- Story viewer / modals ---------- */
+.overlay{position:fixed;inset:0;background:rgba(8,8,10,.93);z-index:100;display:none;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.story-view{width:min(430px,100vw);height:min(760px,100dvh);position:relative;background:#000;border-radius:0;overflow:hidden}
+@media(min-width:600px){.story-view{border-radius:16px}}
+.story-view>img{width:100%;height:100%;object-fit:cover}
+.story-progress{position:absolute;top:10px;right:10px;left:10px;display:flex;gap:5px;z-index:3}
+.story-progress i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.35);overflow:hidden;display:block}
+.story-progress i b{display:block;height:100%;width:0;background:#fff}
+.story-top{position:absolute;top:22px;right:12px;left:12px;display:flex;align-items:center;gap:9px;z-index:3;color:#fff}
+.story-top .grow{flex:1}
+.story-top b{color:#fff;font-size:14.5px}
+.story-top span{display:block;font-size:12px;opacity:.85}
+.story-close{background:rgba(0,0,0,.4);color:#fff;border:0;width:38px;height:38px;border-radius:50%;font-size:17px}
+.story-nav{position:absolute;top:0;bottom:0;width:38%;background:none;border:0;z-index:2}
+.story-nav.prev{right:0}.story-nav.next{left:0}
+.story-reply{position:absolute;bottom:12px;right:12px;left:12px;display:flex;gap:8px;z-index:3}
+.story-reply input{flex:1;border:1.5px solid rgba(255,255,255,.6);background:rgba(0,0,0,.35);color:#fff;border-radius:999px;padding:10px 15px;min-height:44px;outline:none}
+.story-reply input::placeholder{color:rgba(255,255,255,.75)}
+.story-reply button{background:#fff;color:#111;border:0;border-radius:999px;padding:0 18px;font-weight:700}
+
+/* messenger drawer */
+.drawer{position:fixed;top:0;bottom:0;left:0;width:min(370px,94vw);background:var(--card);z-index:90;box-shadow:4px 0 24px rgba(0,0,0,.2);transform:translateX(-105%);transition:transform .25s;display:none;flex-direction:column}
+.drawer.shown{display:flex}
+.drawer.open{transform:translateX(0)}
+.drawer header{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line)}
+.drawer header b{flex:1;font-size:17px}
+.chat-list{overflow-y:auto}
+.chat-row{display:flex;gap:11px;padding:11px 15px;width:100%;background:none;border:0;text-align:right;align-items:center}
+.chat-row:hover{background:var(--hover)}
+.chat-row .grow{flex:1;min-width:0}
+.chat-row b{font-size:14.5px;display:block}
+.chat-row span{font-size:13px;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-view{display:none;flex-direction:column;flex:1;min-height:0}
+.chat-view.open{display:flex}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:8px 13px;border-radius:16px;font-size:14.5px;width:fit-content}
+.msg.them{background:var(--input);border-start-start-radius:4px;align-self:flex-start}
+.msg.me{background:var(--teal);color:#fff;border-start-end-radius:4px;align-self:flex-end}
+.msg time{display:block;font-size:10.5px;opacity:.7;margin-top:2px}
+.typing{align-self:flex-start;background:var(--input);border-radius:16px;padding:10px 15px;color:var(--muted);font-size:13px;display:none}
+.chat-form{display:flex;gap:8px;padding:11px;border-top:1px solid var(--line)}
+.chat-form input{flex:1;border:0;background:var(--input);border-radius:999px;padding:9px 14px;min-height:42px;outline:none}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:80;display:none}
+.scrim.open{display:block}
+
+/* toast */
+.toast{position:fixed;bottom:86px;right:50%;transform:translateX(50%) translateY(20px);background:#22201D;color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:200;box-shadow:var(--shadow);max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(50%) translateY(0)}
+:root[data-theme="dark"] .toast{background:#F2EFE8;color:#1D1B18}
+
+/* bottom nav (mobile) */
+.bottom-nav{display:none}
+@media(max-width:1080px){
+  .layout{grid-template-columns:minmax(0,1fr) 300px}
+  .col-left{display:none}
+  .topnav button{padding:6px 13px}
+}
+@media(max-width:760px){
+  .layout{grid-template-columns:minmax(0,1fr);padding:12px 10px 150px}
+  .col-right{display:none}
+  .topnav{display:none}
+  .logo-name small{display:none}
+  .logo-name{font-size:17px}
+  .searchbox{flex:1}
+  .bottom-nav{display:flex;position:fixed;bottom:0;right:0;left:0;background:var(--card);border-top:1px solid var(--line);z-index:65;padding:4px 6px calc(4px + env(safe-area-inset-bottom))}
+  .bottom-nav button{flex:1;background:none;border:0;border-radius:10px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;padding:6px 2px;position:relative}
+  .bottom-nav button.active{color:var(--brand)}
+  .bottom-nav .bdg{position:absolute;top:2px;left:calc(50% - 20px);background:var(--badge);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:999px;display:grid;place-items:center}
+  .profile-cover{height:170px}
+  .toast{bottom:96px}
+}
+
+/* ---------- Auth (real accounts) ---------- */
+.auth-overlay{position:fixed;inset:0;background:rgba(10,10,12,.72);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.auth-overlay.open{display:flex}
+.auth-card{background:var(--card);color:var(--text);border-radius:18px;box-shadow:var(--shadow);width:min(420px,100%);padding:26px 24px;max-height:92dvh;overflow-y:auto}
+.auth-card .logo-mark{margin:0 auto 10px}
+.auth-card h2{margin:0 0 4px;text-align:center;font-size:21px}
+.auth-card .sub{text-align:center;color:var(--muted);font-size:13.5px;margin:0 0 16px;line-height:1.7}
+.auth-card label{display:block;font-size:13.5px;font-weight:600;margin:12px 0 5px}
+.auth-card input{width:100%;border:1.5px solid var(--line);background:var(--input);border-radius:11px;padding:11px 13px;min-height:46px;outline:none}
+.auth-card input:focus{border-color:var(--teal)}
+.auth-err{display:none;background:#FDECEC;color:#8E1F1F;border-radius:10px;padding:9px 12px;font-size:13.5px;margin-top:12px;line-height:1.6}
+.auth-err.show{display:block}
+:root[data-theme="dark"] .auth-err{background:#3A1E1E;color:#F3B8B8}
+.auth-submit{width:100%;margin-top:16px;padding:12px;font-size:15.5px}
+.auth-toggle{width:100%;background:none;border:0;color:var(--teal);font-weight:700;margin-top:8px}
+.auth-demo{width:100%;background:none;border:0;color:var(--muted);font-size:13.5px;margin-top:2px;text-decoration:underline}
+.auth-note{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 0;line-height:1.7}
+
+/* ---------- Real layer ---------- */
+.real-banner{display:flex;gap:10px;align-items:center;background:var(--teal-soft);border-radius:14px;padding:12px 15px;font-size:14px;flex-wrap:wrap}
+.real-banner b{color:var(--teal)}
+.real-banner .grow{flex:1;min-width:180px}
+.feed-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;font-weight:600;margin:2px 2px -2px}
+.feed-divider::before,.feed-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.real-tag{display:inline-block;background:var(--teal);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;vertical-align:middle}
+.demo-tag{display:inline-block;background:var(--input);color:var(--muted);font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;vertical-align:middle}
+.acct-row{display:flex;align-items:center;gap:10px;padding:6px 8px}
+.acct-row .grow{flex:1;min-width:0}
+.acct-row b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acct-row span{font-size:12.5px;color:var(--muted);display:block}
+</style>
+</head>
+<body>
+
+<!-- ======= Auth (real accounts — same Firebase project as Shehad Chat) ======= -->
+<div class="auth-overlay" id="authScreen" role="dialog" aria-modal="true" aria-label="تسجيل الدخول">
+  <div class="auth-card">
+    <div class="logo-mark">ش</div>
+    <h2>Shehad Social</h2>
+    <p class="sub">سجّل دخولك بحسابك الحقيقي — نفس حساب <b>Shehad Chat</b>: إيميل واحد وكلمة مرور واحدة للتطبيقين، ومنشوراتك وتعليقاتك هتوصل لكل المستخدمين فعليًا.</p>
+    <div id="authNameWrap">
+      <label for="authName">الاسم الظاهر</label>
+      <input id="authName" type="text" placeholder="اسمك اللي الناس هتشوفه" autocomplete="name">
+    </div>
+    <label for="authEmail">البريد الإلكتروني</label>
+    <input id="authEmail" type="email" placeholder="name@example.com" autocomplete="email" dir="ltr" style="text-align:left">
+    <label for="authPass">كلمة المرور</label>
+    <input id="authPass" type="password" placeholder="٦ أحرف على الأقل" autocomplete="new-password" dir="ltr" style="text-align:left">
+    <div class="auth-err" id="authErr"></div>
+    <button class="btn btn-brand auth-submit" id="authSubmit">إنشاء حساب جديد</button>
+    <button class="auth-toggle" id="authToggle">عندي حساب بالفعل — تسجيل الدخول</button>
+    <button class="auth-demo" id="authDemo">المتابعة في الوضع التجريبي بدون حساب</button>
+    <p class="auth-note">الحساب مجاني تمامًا (Firebase — خطة مجانية). في الوضع التجريبي كل المحتوى محلي داخل الصفحة فقط.</p>
+  </div>
+</div>
+
+<!-- ======= Top bar ======= -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-mark">ش</div>
+    <div class="logo-name">Shehad Social<small>منصة كريم شهاد للفن والسينما</small></div>
+  </div>
+  <div class="searchbox">
+    <span class="sicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></span>
+    <input id="searchInput" type="search" placeholder="ابحث عن أشخاص، صفحات، مجموعات، منشورات…" autocomplete="off" aria-label="بحث">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <nav class="topnav" aria-label="التنقل الرئيسي">
+    <button data-nav="feed" class="active" title="الرئيسية"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></button>
+    <button data-nav="groups" title="المجموعات"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5S13.9 16 14.5 19"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.6c2.9-.3 4.9 1.2 5.5 4.4"/></svg></button>
+    <button data-nav="pages" title="الصفحات"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V4"/><path d="M5 4h13l-2.5 4L18 12H5"/></svg></button>
+    <button data-nav="profile" title="الملف الشخصي"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/></svg></button>
+  </nav>
+  <div class="top-actions">
+    <button class="icon-btn" id="themeBtn" title="الوضع الليلي / النهاري" aria-label="تبديل المظهر"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13.2A8.2 8.2 0 0 1 10.8 4 8.5 8.5 0 1 0 20 13.2Z"/></svg></button>
+    <button class="icon-btn" id="msgBtn" title="Shehad Chat — الرسائل" aria-label="الرسائل"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12Z"/></svg><span class="bdg" id="msgBadge">2</span></button>
+    <div class="notif-wrap">
+      <button class="icon-btn" id="notifBtn" title="الإشعارات" aria-label="الإشعارات"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 9a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 15 18 9"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg><span class="bdg" id="notifBadge">4</span></button>
+      <div class="notif-panel" id="notifPanel">
+        <h3>الإشعارات</h3>
+        <div id="notifList"></div>
+      </div>
+    </div>
+    <img class="top-avatar" id="topAvatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="كريم شهاد" title="الملف الشخصي">
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ======= Right column (start in RTL) ======= -->
+  <aside class="col-side col-right">
+    <div class="side-card" id="realAccountCard">
+      <h4>حسابك الحقيقي</h4>
+      <div id="realSignedOut">
+        <p class="demo-note" style="padding:2px 8px 8px">أنت في الوضع التجريبي الآن. سجّل دخولك عشان تنشر وتعلّق وتتابع ناس حقيقيين — نفس حساب Shehad Chat.</p>
+        <button class="btn btn-brand" id="realLoginBtn" style="width:100%">تسجيل الدخول / إنشاء حساب</button>
+      </div>
+      <div id="realSignedIn" hidden>
+        <div class="acct-row">
+          <span class="av-init c2" id="realMeAv" style="width:42px;height:42px;font-size:18px">؟</span>
+          <span class="grow"><b id="realMeName">…</b><span id="realMeMail"></span></span>
+          <span class="real-tag">حقيقي</span>
+        </div>
+        <button class="btn btn-soft sm" id="realLogout" style="width:100%;margin-top:6px">تسجيل الخروج</button>
+      </div>
+    </div>
+    <div class="side-card" id="realUsersCard" hidden>
+      <h4>مستخدمون حقيقيون على المنصة</h4>
+      <div id="realUsers"></div>
+    </div>
+    <div class="side-card" id="realReqCard" hidden>
+      <h4>طلبات صداقة حقيقية</h4>
+      <div id="realReqs"></div>
+    </div>
+    <div class="side-card">
+      <button class="side-user" data-nav="profile">
+        <img class="av" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" width="46" height="46" alt="كريم شهاد">
+        <span style="flex:1"><b>كريم شهاد</b><span>THE AI FILMMAKER · @karimshehadart</span></span>
+      </button>
+      <button class="menu-item" data-nav="feed"><span class="mi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>آخر الأخبار</button>
+      <button class="menu-item" data-nav="groups"><span class="mi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5S13.9 16 14.5 19"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.6c2.9-.3 4.9 1.2 5.5 4.4"/></svg></span>المجموعات</button>
+      <button class="menu-item" data-nav="pages"><span class="mi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V4"/><path d="M5 4h13l-2.5 4L18 12H5"/></svg></span>الصفحات</button>
+      <button class="menu-item" id="savedBtn"><span class="mi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4.5L6 21Z"/></svg></span>العناصر المحفوظة <span id="savedCount" style="margin-inline-start:auto;color:var(--muted);font-size:13px"></span></button>
+      <button class="menu-item" id="chatMenuBtn"><span class="mi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12Z"/></svg></span>Shehad Chat — الرسائل</button>
+    </div>
+    <div class="side-card">
+      <h4>مجموعاتك</h4>
+      <div id="sideGroups"></div>
+    </div>
+    <p class="demo-note">المنصة دلوقتي حقيقية: بحسابك (نفس حساب Shehad Chat) منشوراتك وتعليقاتك وطلبات الصداقة بتتوصل فعليًا بين المستخدمين عبر Firebase. المحتوى المعلَّم «تجريبي» بس هو اللي توضيحي داخل الصفحة. الصفحة الرسمية: Karim Shehad AI Art على فيسبوك وإنستغرام @karimshehadart.</p>
+  </aside>
+
+  <!-- ======= Center ======= -->
+  <main>
+    <!-- FEED VIEW -->
+    <section class="view active" id="view-feed">
+      <div class="stories" id="storiesRow"></div>
+      <div class="card composer">
+        <div class="composer-top">
+          <img class="av" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" width="44" height="44" alt="كريم شهاد">
+          <textarea id="composerText" rows="1" placeholder="بماذا تفكّر يا كريم؟ شارك جديد أعمالك…"></textarea>
+        </div>
+        <div class="composer-actions">
+          <button class="chip-btn" id="attachBtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#2E9E4F" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5.5-5 3.5 3L17 12l3 3.5"/></svg>صورة</button>
+          <button class="chip-btn" id="feelingBtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#B9852B" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.4 2.2 2 3.5 2s2.5-.6 3.5-2"/><circle cx="9" cy="9.5" r=".6" fill="currentColor"/><circle cx="15" cy="9.5" r=".6" fill="currentColor"/></svg><span id="feelingLbl">شعور / نشاط</span></button>
+          <button class="btn btn-brand publish" id="publishBtn">نشر</button>
+        </div>
+        <div id="attachPreview" style="display:none;margin-top:10px;position:relative">
+          <img id="attachImg" style="width:100%;height:180px;object-fit:cover;border-radius:11px" alt="الصورة المرفقة بالمنشور">
+          <button id="attachRemove" class="btn btn-soft sm" style="position:absolute;top:8px;left:8px">إزالة الصورة</button>
+        </div>
+      </div>
+      <div class="real-banner" id="realBanner">
+        <span class="grow" id="realBannerText">🔴 <b>الموجز الحقيقي:</b> سجّل دخولك بحسابك (نفس حساب Shehad Chat) عشان تشوف منشورات المستخدمين الحقيقيين وتنشر لهم.</span>
+        <button class="btn btn-teal sm" id="realBannerBtn">تسجيل الدخول</button>
+      </div>
+      <div id="realFeed" style="display:flex;flex-direction:column;gap:14px"></div>
+      <div class="feed-divider" id="demoDivider">محتوى تجريبي للعرض — حسابات ومنشورات توضيحية داخل هذه الصفحة فقط</div>
+      <div id="feedPosts" style="display:flex;flex-direction:column;gap:14px"></div>
+    </section>
+
+    <!-- PROFILE VIEW -->
+    <section class="view" id="view-profile">
+      <div class="card profile-hero">
+        <img class="profile-cover" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="غلاف الاستوديو — موقع تصوير على أسطح القاهرة وقت الغروب">
+        <div class="profile-id">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="كريم شهاد">
+          <div class="grow">
+            <h1>كريم شهاد <span class="verified"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.5 1 3 3 1-.5 3.1L23 13l-2 2.3.5 3.1-3 1-1 3-3.1-.5L12 24l-2.4-2.1-3.1.5-1-3-3-1 .5-3.1L1 13l2-2.3L2.5 7.6l3-1 1-3 3.1.5Z" transform="scale(.92) translate(1,0)"/><path d="m8.8 12.2 2.2 2.2 4.2-4.4" stroke="#fff" stroke-width="2" fill="none"/></svg></span></h1>
+            <div class="handle">@karimshehadart · Karim Shehad AI Art</div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div><b>182</b> <span>عملًا فنيًا</span></div>
+          <div><b id="statFriends">1,248</b> <span>صديقًا (تجريبي)</span></div>
+          <div><b id="statFollowers">9,630</b> <span>متابِعًا (تجريبي)</span></div>
+        </div>
+        <p class="profile-bio"><span class="tag">THE AI FILMMAKER</span> — رائد في الإبداع بالذكاء الاصطناعي: أفلام رسوم متحركة وفيديوهات موسيقية وإنتاجات سينمائية بالذكاء الاصطناعي.<br>📍 القاهرة، مصر · 🎬 صانع أفلام وفنان بصري<br>فيسبوك: <a href="https://www.facebook.com/KarimShehadArt" target="_blank" rel="noopener">KarimShehadArt</a> · إنستغرام: @karimshehadart</p>
+        <div class="profile-btns">
+          <button class="btn btn-brand" id="profileMsgBtn">مراسلة عبر Shehad Chat</button>
+          <button class="btn btn-soft" id="profileFollowBtn">متابعة</button>
+          <button class="btn btn-soft" id="profileShareBtn">مشاركة الملف</button>
+        </div>
+        <div class="tabs" id="profileTabs">
+          <button class="active" data-ptab="posts">المنشورات</button>
+          <button data-ptab="photos">الصور</button>
+          <button data-ptab="about">حول</button>
+        </div>
+      </div>
+      <div id="profileTab-posts" style="display:flex;flex-direction:column;gap:14px"></div>
+      <div id="profileTab-photos" class="card" style="display:none">
+        <div class="photo-grid">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="بورتريه كريم شهاد بأسلوب سينمائي مرسوم">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="موقع تصوير على أسطح القاهرة وقت الغروب">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="موقع تصوير فيلم عند معبد فرعوني">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="استوديو رسوم متحركة بثلاث شاشات ليلًا">
+        </div>
+      </div>
+      <div id="profileTab-about" class="card" style="display:none;padding:18px">
+        <h3 style="margin-top:0">حول كريم شهاد</h3>
+        <p>فنان وصانع أفلام، من روّاد الإبداع المدفوع بالذكاء الاصطناعي في مصر والعالم العربي. يوقّع أعماله باسم <b>Karim Shehad AI Art</b> — كريم شهاد | Karim Shehad AI Art ©.</p>
+        <p>أعماله تشمل أفلامًا قصيرة ورسومًا متحركة وفيديوهات موسيقية وإنتاجات سينمائية كاملة تُبنى بالذكاء الاصطناعي من الفكرة حتى الشاشة.</p>
+        <p style="color:var(--muted)">الأرقام والتفاعلات داخل هذه المنصة تجريبية للعرض. للحسابات الحقيقية: فيسبوك KarimShehadArt وإنستغرام @karimshehadart.</p>
+      </div>
+    </section>
+
+    <!-- GROUPS VIEW -->
+    <section class="view" id="view-groups">
+      <h2 class="section-title">المجموعات</h2>
+      <p style="margin:0;color:var(--muted)">مجموعات تجريبية لصنّاع الأفلام والفنانين — انضم وشارك في النقاش داخل موجز الأخبار.</p>
+      <div class="grid-cards" id="groupsGrid"></div>
+    </section>
+
+    <!-- PAGES VIEW -->
+    <section class="view" id="view-pages">
+      <h2 class="section-title">الصفحات</h2>
+      <p style="margin:0;color:var(--muted)">صفحات تجريبية داخل المنصة. الصفحة الحقيقية الوحيدة هنا هي صفحة كريم شهاد الفنية.</p>
+      <div class="grid-cards" id="pagesGrid"></div>
+    </section>
+
+    <!-- PERSON VIEW (demo users) -->
+    <section class="view" id="view-person">
+      <div class="card profile-hero">
+        <img class="profile-cover" id="personCover" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="غلاف الملف الشخصي">
+        <div class="profile-id">
+          <span class="av-init" id="personAvatar" style="width:120px;height:120px;font-size:44px;border:4px solid var(--card)"></span>
+          <div class="grow"><h1 id="personName"></h1><div class="handle" id="personRole"></div></div>
+        </div>
+        <p class="profile-bio" id="personBio"></p>
+        <div class="profile-btns">
+          <button class="btn btn-brand" id="personAddBtn">إضافة صديق</button>
+          <button class="btn btn-soft" id="personMsgBtn">مراسلة</button>
+          <button class="btn btn-soft" data-nav="feed">عودة للرئيسية</button>
+        </div>
+      </div>
+      <div id="personPosts" style="display:flex;flex-direction:column;gap:14px"></div>
+    </section>
+  </main>
+
+  <!-- ======= Left column (end in RTL) ======= -->
+  <aside class="col-side col-left">
+    <div class="chat-cta">
+      <h4>💬 Shehad Chat</h4>
+      <p>تطبيق المراسلة المرافق — محادثاتك على بُعد ضغطة واحدة من هنا.</p>
+      <button id="chatCtaBtn">فتح المحادثات</button>
+    </div>
+    <div class="side-card">
+      <h4>صفحات مقترحة</h4>
+      <div id="sidePages"></div>
+    </div>
+    <div class="side-card">
+      <h4>جهات الاتصال — متصل الآن</h4>
+      <div id="contactsList"></div>
+    </div>
+    <div class="side-card">
+      <h4>طلبات صداقة</h4>
+      <div id="friendReqs"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- ======= Bottom nav (mobile) ======= -->
+<nav class="bottom-nav" aria-label="التنقل">
+  <button data-nav="feed" class="active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>الرئيسية</button>
+  <button data-nav="groups"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5S13.9 16 14.5 19"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.6c2.9-.3 4.9 1.2 5.5 4.4"/></svg>المجموعات</button>
+  <button data-nav="pages"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V4"/><path d="M5 4h13l-2.5 4L18 12H5"/></svg>الصفحات</button>
+  <button id="bottomNotifBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 9a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 15 18 9"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg>الإشعارات<span class="bdg" id="notifBadgeM">4</span></button>
+  <button data-nav="profile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/></svg>حسابي</button>
+</nav>
+
+<!-- ======= Story viewer ======= -->
+<div class="overlay" id="storyOverlay">
+  <div class="story-view">
+    <img id="storyImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="قصة">
+    <div class="story-progress" id="storyProgress"></div>
+    <div class="story-top">
+      <img class="av" id="storyAv" width="38" height="38" alt="">
+      <div class="grow"><b id="storyName"></b><span id="storyTime"></span></div>
+      <button class="story-close" id="storyClose" aria-label="إغلاق">✕</button>
+    </div>
+    <button class="story-nav prev" id="storyPrev" aria-label="السابق"></button>
+    <button class="story-nav next" id="storyNext" aria-label="التالي"></button>
+    <div class="story-reply">
+      <input id="storyReplyInput" placeholder="ردّ على القصة…">
+      <button id="storyReplyBtn">إرسال</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= Messenger drawer ======= -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Shehad Chat">
+  <header>
+    <b>Shehad Chat <span class="demo-tag">محادثات تجريبية — للرسائل الحقيقية افتح تطبيق Shehad Chat</span></b>
+    <button class="icon-btn" id="drawerClose" aria-label="إغلاق">✕</button>
+  </header>
+  <div class="chat-list" id="chatList"></div>
+  <div class="chat-view" id="chatView">
+    <header style="padding:10px 15px">
+      <button class="icon-btn" id="chatBack" aria-label="رجوع">→</button>
+      <span class="av-init" id="chatAv" style="width:38px;height:38px"></span>
+      <b id="chatName" style="flex:1"></b>
+    </header>
+    <div class="msgs" id="chatMsgs"></div>
+    <div class="typing" id="typingInd">يكتب الآن…</div>
+    <form class="chat-form" id="chatForm">
+      <input id="chatInput" placeholder="اكتب رسالة…" autocomplete="off">
+      <button class="btn btn-teal" type="submit">إرسال</button>
+    </form>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+<script>
+/* ================= Data (demo content, in-page only) ================= */
+const ME = {id:'karim', name:'كريم شهاد', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', color:'c2'};
+const PEOPLE = [
+  {id:'sara', name:'سارة عادل', init:'س', color:'c1', role:'مصمّمة موشن ورسوم متحركة', bio:'مصمّمة موشن من القاهرة، مهتمة بأفلام الرسوم المتحركة والذكاء الاصطناعي. (حساب تجريبي)', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', online:true},
+  {id:'ahmed', name:'أحمد سامي', init:'أ', color:'c3', role:'مخرج ومونتير', bio:'مخرج ومونتير يعمل على أفلام قصيرة وتجارب بصرية. (حساب تجريبي)', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', online:true},
+  {id:'mona', name:'منى خليل', init:'م', color:'c4', role:'ناقدة سينمائية', bio:'ناقدة سينمائية وكاتبة عن تاريخ السينما المصرية. (حساب تجريبي)', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', online:true},
+  {id:'youssef', name:'يوسف نادر', init:'ي', color:'c5', role:'مؤلف موسيقي', bio:'مؤلف موسيقي للأفلام والميديا التفاعلية. (حساب تجريبي)', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', online:false},
+  {id:'layla', name:'ليلى حسن', init:'ل', color:'c6', role:'فنانة رقمية', bio:'فنانة رقمية ورسّامة مفاهيم للأفلام والقصص المصوّرة. (حساب تجريبي)', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', online:true},
+];
+const personById = id => PEOPLE.find(p=>p.id===id);
+const GROUPS = [
+  {id:'g1', name:'صنّاع الأفلام بالذكاء الاصطناعي', members:'12.4 ألف عضو', desc:'نقاشات وتجارب يومية حول صناعة الأفلام بأدوات الذكاء الاصطناعي.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', joined:true},
+  {id:'g2', name:'فنانون مصر الرقميون', members:'8.1 ألف عضو', desc:'مجتمع الفنانين الرقميين في مصر: أعمال، نقد بنّاء، وفرص تعاون.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', joined:false},
+  {id:'g3', name:'محبّو السينما المصرية', members:'21 ألف عضو', desc:'من كلاسيكيات الأبيض والأسود إلى أحدث التجارب السينمائية.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', joined:false},
+  {id:'g4', name:'تعلّم AI Art بالعربي', members:'5.6 ألف عضو', desc:'شروحات ودروس عربية لبناء الصور والمشاهد والأفلام بالذكاء الاصطناعي.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', joined:true},
+];
+const PAGES = [
+  {id:'p1', name:'Karim Shehad AI Art', cat:'صفحة فنية · أعمال كريم شهاد', desc:'الصفحة الرسمية لأعمال Karim Shehad AI Art — أفلام ورسوم وفيديوهات موسيقية بالذكاء الاصطناعي.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', followed:true, official:true},
+  {id:'p2', name:'سينما القاهرة', cat:'صفحة ثقافية (تجريبية)', desc:'أخبار المهرجانات والعروض وذاكرة السينما في القاهرة.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', followed:false},
+  {id:'p3', name:'استوديو النيل للإنتاج', cat:'إنتاج فني (تجريبية)', desc:'استوديو إنتاج يشارك كواليس أعماله وتجاربه البصرية.', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', cover:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', followed:false},
+];
+let posts = [
+  {id:1, author:{type:'page', pageId:'p1', name:'Karim Shehad AI Art', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='}, time:'قبل ساعتين', audience:'عام',
+   text:'من موقع تصوير أحدث أفلامي بالذكاء الاصطناعي 🎬\nمشهد المعبد عند الغروب — بنبني مصر القديمة من جديد، لقطة ورا لقطة، من غير ما نغادر الاستوديو.\nإيه أكتر حاجة شدتكم في المشهد؟',
+   img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', imgAlt:'موقع تصوير فيلم عند معبد فرعوني وقت الغروب',
+   likes:342, shares:28, reaction:'', liked:false,
+   comments:[{who:'sara', text:'الإضاءة الذهبية على التماثيل عبقرية! مستنية الفيلم.'},{who:'ahmed', text:'المشهد ده لوحده بوستر. شغل كبير يا كريم 👏'}]},
+  {id:2, author:{type:'me'}, time:'قبل 5 ساعات', audience:'الأصدقاء', feeling:'يشعر بالإلهام ✨',
+   text:'ليلة شغل في الاستوديو 🌙\n٣ شاشات، مشهد بيتركّب، وشخصية لازم تفضل ثابتة من أول لقطة لآخر لقطة — ده أصعب وأجمل ما في صناعة الأفلام بالذكاء الاصطناعي.\nقريبًا هشارككم النتيجة.',
+   img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', imgAlt:'استوديو رسوم متحركة بثلاث شاشات ليلًا',
+   likes:518, shares:41, reaction:'', liked:false,
+   comments:[{who:'mona', text:'ثبات الشخصية هو التحدي الحقيقي فعلًا. بالتوفيق!'},{who:'youssef', text:'لو محتاج موسيقى للمشهد ده، أنا جاهز 🎼'}]},
+  {id:3, author:{type:'person', pid:'sara'}, group:'صنّاع الأفلام بالذكاء الاصطناعي', time:'قبل 7 ساعات', audience:'عام',
+   text:'استطلاع سريع لصنّاع الأفلام هنا 👇\nمن تجربتكم، إيه أهم خطوة في نجاح أي فيلم بالذكاء الاصطناعي؟',
+   poll:{options:[{t:'كتابة المشهد والسيناريو', v:34},{t:'ثبات الشخصية عبر اللقطات', v:58},{t:'المونتاج والموسيقى', v:21}], voted:-1},
+   likes:96, shares:6, reaction:'', liked:false,
+   comments:[{who:'layla', text:'صوّت لثبات الشخصية — من غيره كل حاجة بتقع.'}]},
+  {id:4, author:{type:'person', pid:'mona'}, time:'أمس · 9:40 م', audience:'عام',
+   text:'في كل مهرجان بسأل نفسي نفس السؤال: هل الذكاء الاصطناعي هيغيّر السينما، ولا هيغيّر مين يقدر يعمل سينما؟\nأظن الإجابة التانية أدق. الأدوات اتفتحت للكل، واللي هيفضل فارق هو الحكاية والعين.',
+   likes:203, shares:17, reaction:'', liked:false,
+   comments:[{who:'karim', text:'متفق تمامًا يا منى. الحكاية أولًا، دائمًا.'}]},
+  {id:5, author:{type:'page', pageId:'p1', name:'Karim Shehad AI Art', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='}, time:'أمس · 6:15 م', audience:'عام',
+   text:'الغروب على أسطح القاهرة مش مجرد منظر 🌇\nده اللوكيشن اللي اتولدت فيه فكرة أول أفلامي. كل سطح حكاية، وكل حكاية تستاهل تتحكي.',
+   img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', imgAlt:'موقع تصوير على أسطح القاهرة والنيل وقت الغروب',
+   likes:764, shares:89, reaction:'', liked:false,
+   comments:[{who:'ahmed', text:'القاهرة في الغروب سينما لوحدها.'},{who:'sara', text:'الصورة دي تستاهل تكون غلاف ❤️'}]},
+  {id:6, author:{type:'person', pid:'ahmed'}, time:'أمس · 2:20 م', audience:'عام',
+   text:'سؤال للمونتيرين والمخرجين: بتفضّلوا القطع الحاد (Hard Cut) بين اللقطات، ولا الانتقالات الناعمة؟\nفي شغلي الأخير اكتشفت إن القطع الحاد بيحافظ على صدق اللقطات أكتر بكتير.',
+   likes:74, shares:3, reaction:'', liked:false, comments:[]},
+];
+let notifs = [
+  {who:'sara', text:'أعجبت بمنشورك «ليلة شغل في الاستوديو»', time:'قبل 10 دقائق', unread:true},
+  {who:'ahmed', text:'علّق على منشورك: «المشهد ده لوحده بوستر. شغل كبير يا كريم»', time:'قبل 32 دقيقة', unread:true},
+  {who:'mona', text:'ذكرتك في تعليق داخل مجموعة «صنّاع الأفلام بالذكاء الاصطناعي»', time:'قبل ساعة', unread:true},
+  {who:'page', text:'نشرت صفحة Karim Shehad AI Art منشورًا جديدًا عن موقع تصوير المعبد', time:'قبل ساعتين', unread:true},
+  {who:'layla', text:'أرسلت لك طلب صداقة', time:'أمس', unread:false},
+];
+const STORIES = [
+  {who:'karim', name:'كريم شهاد', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', av:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', time:'قبل 26 دقيقة'},
+  {who:'sara', name:'سارة عادل', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', init:'س', color:'c1', time:'قبل ساعة'},
+  {who:'ahmed', name:'أحمد سامي', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', init:'أ', color:'c3', time:'قبل 3 ساعات'},
+  {who:'mona', name:'منى خليل', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', init:'م', color:'c4', time:'قبل 5 ساعات'},
+];
+const CHATS = [
+  {pid:'sara', msgs:[{f:'them', t:'شفت مشهد المعبد؟ الإضاءة تحفة!', time:'10:12'},{f:'me', t:'لسه منزّله حالًا على الصفحة 🙏', time:'10:14'}], unread:1, reply:'تمام! هشاركه عندي في الجروب دلوقتي 🎬'},
+  {pid:'ahmed', msgs:[{f:'them', t:'عاوز رأيك في نسخة المونتاج الجديدة', time:'9:40'}], unread:1, reply:'ابعتهالي وأنا أراجعها الليلة إن شاء الله'},
+  {pid:'mona', msgs:[{f:'them', t:'مقالي الجديد عن سينما الذكاء الاصطناعي نزل', time:'أمس'},{f:'me', t:'قريته، تحليل ممتاز كالعادة', time:'أمس'}], unread:0, reply:'شكرًا يا كريم! رأيك يهمّني دائمًا'},
+];
+
+/* ================= Helpers ================= */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+function esc(s){return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let toastTimer;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
+function avatarHTML(who, size){
+  if(who.img) return `<img class="av" src="${who.img}" width="${size}" height="${size}" alt="${esc(who.name)}">`;
+  return `<span class="av-init ${who.color}" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.42)}px">${esc(who.init)}</span>`;
+}
+function authorInfo(post){
+  if(post.author.type==='me') return {name:'كريم شهاد', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', nav:'profile'};
+  if(post.author.type==='page'){ const pg=PAGES.find(p=>p.id===post.author.pageId); return {name:post.author.name, img:post.author.img, nav:'pages', verified:pg&&pg.official}; }
+  const p=personById(post.author.pid); return {name:p.name, init:p.init, color:p.color, nav:'person:'+p.id};
+}
+function commentAuthor(who){
+  if(who==='karim') return {name:'كريم شهاد', img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='};
+  const p=personById(who); return p?{name:p.name, init:p.init, color:p.color}:{name:who};
+}
+const verifiedSVG = '<span class="verified"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.3 2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="2" fill="none"/></svg></span>';
+
+/* ================= Posts rendering ================= */
+function postHTML(post){
+  const a = authorInfo(post);
+  const totalVotes = post.poll ? post.poll.options.reduce((s,o)=>s+o.v,0) : 0;
+  let pollHTML='';
+  if(post.poll){
+    pollHTML = `<div class="poll">${post.poll.options.map((o,i)=>{
+      const pct = totalVotes? Math.round(o.v/totalVotes*100):0;
+      const voted = post.poll.voted>=0;
+      return `<button class="poll-opt ${post.poll.voted===i?'voted':''}" data-poll="${post.id}" data-opt="${i}"><span class="fill" style="width:${voted?pct:0}%"></span><span class="lbl">${esc(o.t)} ${post.poll.voted===i?'✓':''}</span><span class="pct">${voted?pct+'%':''}</span></button>`;
+    }).join('')}</div><div class="poll-total">${totalVotes} صوتًا (تجريبي)${post.poll.voted>=0?' · شكرًا لتصويتك':''}</div>`;
+  }
+  const reactEmoji = post.reaction || '';
+  return `<article class="card post" id="post-${post.id}">
+    <div class="post-head">
+      <button style="background:none;border:0;padding:0;min-height:0" data-goto="${a.nav}" aria-label="فتح ملف ${esc(a.name)}">${avatarHTML(a,44)}</button>
+      <div class="grow">
+        <b><button style="background:none;border:0;padding:0;min-height:0;font-weight:700" data-goto="${a.nav}" aria-label="فتح ملف ${esc(a.name)}">${esc(a.name)}</button> ${a.verified?verifiedSVG:''}</b>
+        <div class="meta"><span>${esc(post.time)}</span>·<span>${esc(post.audience)}</span>${post.group?`· <span>في مجموعة <b>${esc(post.group)}</b></span>`:''}${post.feeling?`· <span>${esc(post.feeling)}</span>`:''}</div>
+      </div>
+      <div class="post-menu-wrap">
+        <button class="icon-btn" style="width:38px;height:38px;background:none" data-menu="${post.id}" aria-label="خيارات المنشور">•••</button>
+        <div class="post-menu" id="menu-${post.id}">
+          <button data-save="${post.id}">🔖 حفظ المنشور</button>
+          <button data-hide="${post.id}">🙈 إخفاء المنشور</button>
+          <button data-copylink="${post.id}">🔗 نسخ رابط المنشور</button>
+        </div>
+      </div>
+    </div>
+    <div class="post-text">${esc(post.text)}</div>
+    ${post.img?`<img class="post-img" src="${post.img}" alt="${esc(post.imgAlt||'صورة المنشور')}" loading="lazy">`:''}
+    ${pollHTML}
+    <div class="post-counts">
+      <span class="reacts">${reactEmoji?reactEmoji+' ':''}👍 <span data-likes="${post.id}">${post.likes}</span> إعجاب</span>
+      <span><span data-ccount="${post.id}">${post.comments.length}</span> تعليق · <span data-shares="${post.id}">${post.shares}</span> مشاركة</span>
+    </div>
+    <div class="post-actions">
+      <div class="like-wrap">
+        <div class="react-picker">
+          <button data-react="${post.id}" data-r="❤️" title="أحببته">❤️</button>
+          <button data-react="${post.id}" data-r="😮" title="أدهشني">😮</button>
+          <button data-react="${post.id}" data-r="👏" title="رائع">👏</button>
+          <button data-react="${post.id}" data-r="👍" title="أعجبني">👍</button>
+        </div>
+        <button class="act-btn ${post.liked?'liked':''}" data-like="${post.id}"><svg width="19" height="19" viewBox="0 0 24 24" fill="${post.liked?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M7 21V10H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3Zm0-11 4.2-7.2c1.6 0 2.6 1.2 2.4 2.8L13 10h6.6a2 2 0 0 1 2 2.4l-1 6.4A2 2 0 0 1 18.6 20H7"/></svg>${post.reaction?esc(post.reaction)+' تفاعلت':'أعجبني'}</button>
+      </div>
+      <button class="act-btn" data-comment-toggle="${post.id}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12Z"/></svg>تعليق</button>
+      <button class="act-btn" data-share="${post.id}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 5.5 20 12l-7 6.5v-4C7 14.5 4.5 17 3 19c0-6 3.5-10.5 10-11.5Z"/></svg>مشاركة</button>
+    </div>
+    <div class="comments" id="comments-${post.id}">
+      <div data-clist="${post.id}">${post.comments.map(c=>commentHTML(c)).join('')}</div>
+      <form class="comment-form" data-cform="${post.id}">
+        <img class="av" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" width="34" height="34" alt="كريم شهاد">
+        <input placeholder="اكتب تعليقًا…" aria-label="اكتب تعليقًا">
+        <button class="btn btn-teal sm" type="submit">نشر</button>
+      </form>
+    </div>
+  </article>`;
+}
+function commentHTML(c){
+  const a = commentAuthor(c.who);
+  return `<div class="comment">${avatarHTML(a,34)}<div class="bubble"><b>${esc(a.name)}</b><p>${esc(c.text)}</p></div></div>`;
+}
+function renderFeed(){ $('#feedPosts').innerHTML = posts.map(postHTML).join(''); }
+function renderProfilePosts(){
+  const mine = posts.filter(p=>p.author.type==='me' || (p.author.type==='page' && p.author.pageId==='p1'));
+  $('#profileTab-posts').innerHTML = mine.length? mine.map(postHTML).join('') : '<div class="card empty-note">لا توجد منشورات بعد</div>';
+}
+
+/* ================= Navigation ================= */
+function showView(name){
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  const el = $('#view-'+name); if(el) el.classList.add('active');
+  $$('[data-nav]').forEach(b=>b.classList.toggle('active', b.dataset.nav===name));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+let currentPerson=null;
+function openPerson(id){
+  const p = personById(id); if(!p) return;
+  currentPerson=p;
+  $('#personName').textContent=p.name;
+  $('#personRole').textContent=p.role+' · حساب تجريبي';
+  $('#personBio').textContent=p.bio;
+  const av=$('#personAvatar'); av.textContent=p.init; av.className='av-init '+p.color; av.style.cssText='width:120px;height:120px;font-size:44px;border:4px solid var(--card)';
+  $('#personCover').src=p.cover;
+  const theirs = posts.filter(x=>x.author.type==='person'&&x.author.pid===id);
+  $('#personPosts').innerHTML = theirs.length? theirs.map(postHTML).join('') : '<div class="card empty-note">لا توجد منشورات منشورة بعد لهذا الحساب التجريبي</div>';
+  showView('person');
+}
+document.addEventListener('click', e=>{
+  const nav = e.target.closest('[data-nav]');
+  if(nav){ showView(nav.dataset.nav); }
+  const go = e.target.closest('[data-goto]');
+  if(go){
+    const t=go.dataset.goto;
+    if(t==='profile') showView('profile');
+    else if(t==='pages') showView('pages');
+    else if(t.startsWith('person:')) openPerson(t.split(':')[1]);
+  }
+});
+
+/* ================= Stories ================= */
+function renderStories(){
+  const row=$('#storiesRow');
+  row.innerHTML = `<button class="story create" id="createStory" aria-label="إنشاء قصة"><img class="bg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" alt="كريم شهاد"><span class="plus">+</span><span class="st-name">إنشاء قصة</span></button>` +
+    STORIES.map((s,i)=>`<button class="story" data-story="${i}" aria-label="قصة ${esc(s.name)}"><img class="bg" src="${s.img}" alt="قصة ${esc(s.name)}" loading="lazy">${s.av?`<img class="st-av" src="${s.av}" alt="">`:`<span class="st-av-init ${s.color}">${esc(s.init)}</span>`}<span class="st-name">${esc(s.name)}</span></button>`).join('');
+  $('#createStory').onclick=()=>toast('اختر صورة من أعمالك لنشرها كقصة (تجريبي)');
+  row.querySelectorAll('[data-story]').forEach(b=>b.onclick=()=>openStory(+b.dataset.story));
+}
+let storyIdx=0, storyTimer=null, storyProg=null;
+function openStory(i){
+  storyIdx=i;
+  const s=STORIES[i];
+  $('#storyImg').src=s.img;
+  $('#storyName').textContent=s.name;
+  $('#storyTime').textContent=s.time;
+  const av=$('#storyAv');
+  if(s.av){ av.src=s.av; av.style.display='block'; } else { av.style.display='none'; }
+  $('#storyProgress').innerHTML = STORIES.map((_,j)=>`<i><b id="sp-${j}"></b></i>`).join('');
+  STORIES.forEach((_,j)=>{ const b=$('#sp-'+j); if(b) b.style.width = j<i?'100%':'0'; });
+  $('#storyOverlay').classList.add('open');
+  clearInterval(storyTimer); cancelAnimationFrame(storyProg);
+  const start=performance.now(), dur=5000;
+  const tick=(now)=>{ const p=Math.min(1,(now-start)/dur); const b=$('#sp-'+storyIdx); if(b) b.style.width=(p*100)+'%'; if(p<1 && $('#storyOverlay').classList.contains('open')) storyProg=requestAnimationFrame(tick); };
+  storyProg=requestAnimationFrame(tick);
+  storyTimer=setTimeout(()=>{ if(storyIdx<STORIES.length-1) openStory(storyIdx+1); else closeStory(); }, dur);
+}
+function closeStory(){ $('#storyOverlay').classList.remove('open'); clearTimeout(storyTimer); cancelAnimationFrame(storyProg); }
+$('#storyClose').onclick=closeStory;
+$('#storyOverlay').addEventListener('click', e=>{ if(e.target.id==='storyOverlay') closeStory(); });
+$('#storyNext').onclick=()=>{ if(storyIdx<STORIES.length-1) openStory(storyIdx+1); else closeStory(); };
+$('#storyPrev').onclick=()=>{ if(storyIdx>0) openStory(storyIdx-1); };
+$('#storyReplyBtn').onclick=()=>{
+  const v=$('#storyReplyInput').value.trim(); if(!v) return;
+  $('#storyReplyInput').value=''; closeStory(); toast('تم إرسال ردّك على القصة (داخل هذه الجلسة)');
+};
+
+/* ================= Composer ================= */
+let attachIdx=-1;
+const ATTACHABLE=['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='];
+$('#attachBtn').onclick=()=>{
+  attachIdx=(attachIdx+1)%ATTACHABLE.length;
+  $('#attachImg').src=ATTACHABLE[attachIdx];
+  $('#attachPreview').style.display='block';
+  $('#attachBtn').classList.add('sel');
+};
+$('#attachRemove').onclick=()=>{ attachIdx=-1; $('#attachPreview').style.display='none'; $('#attachBtn').classList.remove('sel'); };
+const FEELINGS=['يشعر بالإلهام ✨','يعمل على فيلم جديد 🎬','يشعر بالفخر 🏆','في موقع التصوير 📷',''];
+let feelIdx=-1;
+$('#feelingBtn').onclick=()=>{
+  feelIdx=(feelIdx+1)%FEELINGS.length;
+  $('#feelingLbl').textContent = FEELINGS[feelIdx]||'شعور / نشاط';
+  $('#feelingBtn').classList.toggle('sel', !!FEELINGS[feelIdx]);
+};
+let nextPostId=100;
+$('#publishBtn').onclick=()=>{
+  const text=$('#composerText').value.trim();
+  if(!text && attachIdx<0){ toast('اكتب شيئًا أولًا أو أرفق صورة'); return; }
+  /* Signed in with a real account → publish to Firebase so every user sees it */
+  if(window.SocialFB && window.SocialFB.me){
+    window.SocialFB.publishPost(text || '📷 من أحدث أعمالي', attachIdx>=0?ATTACHABLE[attachIdx]:'');
+    $('#composerText').value=''; attachIdx=-1; $('#attachPreview').style.display='none'; $('#attachBtn').classList.remove('sel');
+    feelIdx=-1; $('#feelingLbl').textContent='شعور / نشاط'; $('#feelingBtn').classList.remove('sel');
+    showView('feed');
+    return;
+  }
+  const post={id:nextPostId++, author:{type:'me'}, time:'الآن', audience:'عام',
+    feeling: FEELINGS[feelIdx]||'', text:text||'📷 من أحدث أعمالي',
+    img: attachIdx>=0?ATTACHABLE[attachIdx]:null, imgAlt:'صورة من أعمال كريم شهاد',
+    likes:0, shares:0, reaction:'', liked:false, comments:[]};
+  posts.unshift(post);
+  renderFeed(); renderProfilePosts();
+  $('#composerText').value=''; attachIdx=-1; $('#attachPreview').style.display='none'; $('#attachBtn').classList.remove('sel');
+  feelIdx=-1; $('#feelingLbl').textContent='شعور / نشاط'; $('#feelingBtn').classList.remove('sel');
+  toast('تم نشر منشورك على Shehad Social ✅');
+  showView('feed');
+};
+
+/* ================= Post interactions (delegation) ================= */
+const savedPosts=new Set();
+document.addEventListener('click', e=>{
+  const like=e.target.closest('[data-like]');
+  if(like){
+    const p=posts.find(x=>x.id==like.dataset.like); if(!p) return;
+    p.liked=!p.liked; p.likes+=p.liked?1:-1; if(!p.liked) p.reaction='';
+    refreshPost(p); return;
+  }
+  const react=e.target.closest('[data-react]');
+  if(react){
+    const p=posts.find(x=>x.id==react.dataset.react); if(!p) return;
+    if(!p.liked){ p.liked=true; p.likes+=1; }
+    p.reaction=react.dataset.r; refreshPost(p); toast('تفاعلت بـ '+p.reaction); return;
+  }
+  const ct=e.target.closest('[data-comment-toggle]');
+  if(ct){ const box=$('#comments-'+ct.dataset.commentToggle); if(box) box.classList.toggle('open'); return; }
+  const sh=e.target.closest('[data-share]');
+  if(sh){ const p=posts.find(x=>x.id==sh.dataset.share); if(!p) return; p.shares++; refreshPost(p); toast('تمت مشاركة المنشور على صفحتك (تجريبي)'); return; }
+  const poll=e.target.closest('[data-poll]');
+  if(poll){
+    const p=posts.find(x=>x.id==poll.dataset.poll); if(!p||!p.poll) return;
+    if(p.poll.voted>=0){ toast('صوّتّ من قبل في هذا الاستطلاع'); return; }
+    p.poll.voted=+poll.dataset.opt; p.poll.options[p.poll.voted].v++;
+    refreshPost(p); const box=$('#comments-'+p.id); return;
+  }
+  const menuBtn=e.target.closest('[data-menu]');
+  if(menuBtn){
+    const m=$('#menu-'+menuBtn.dataset.menu);
+    $$('.post-menu').forEach(x=>{ if(x!==m) x.classList.remove('open'); });
+    if(m) m.classList.toggle('open'); return;
+  }
+  if(!e.target.closest('.post-menu-wrap')) $$('.post-menu').forEach(x=>x.classList.remove('open'));
+  const sv=e.target.closest('[data-save]');
+  if(sv){ savedPosts.add(+sv.dataset.save); $('#savedCount').textContent=savedPosts.size+' محفوظ'; $$('.post-menu').forEach(x=>x.classList.remove('open')); toast('تم حفظ المنشور في العناصر المحفوظة'); return; }
+  const hd=e.target.closest('[data-hide]');
+  if(hd){ const el=$('#post-'+hd.dataset.hide); if(el) el.remove(); toast('تم إخفاء المنشور من موجزك'); return; }
+  const cp=e.target.closest('[data-copylink]');
+  if(cp){ $$('.post-menu').forEach(x=>x.classList.remove('open')); toast('رابط المنشور جاهز للمشاركة (تجريبي)'); return; }
+});
+document.addEventListener('submit', e=>{
+  const f=e.target.closest('[data-cform]');
+  if(f){
+    e.preventDefault();
+    const id=f.dataset.cform; const input=f.querySelector('input'); const v=input.value.trim(); if(!v) return;
+    const p=posts.find(x=>x.id==id); if(!p) return;
+    p.comments.push({who:'karim', text:v}); input.value='';
+    const list=document.querySelector(`[data-clist="${id}"]`);
+    if(list) list.innerHTML=p.comments.map(commentHTML).join('');
+    $$(`[data-ccount="${id}"]`).forEach(el=>el.textContent=p.comments.length);
+    toast('تم نشر تعليقك');
+  }
+});
+function refreshPost(p){
+  ['feedPosts','profileTab-posts','personPosts'].forEach(cid=>{
+    const c=document.getElementById(cid); if(!c) return;
+    const old=c.querySelector('#post-'+p.id); if(!old) return;
+    const wasOpen = old.querySelector('.comments')?.classList.contains('open');
+    const tmp=document.createElement('div'); tmp.innerHTML=postHTML(p);
+    const neu=tmp.firstElementChild;
+    if(wasOpen) neu.querySelector('.comments').classList.add('open');
+    old.replaceWith(neu);
+  });
+}
+
+/* ================= Groups & Pages ================= */
+function renderGroups(){
+  $('#groupsGrid').innerHTML = GROUPS.map(g=>`<div class="card gcard">
+    <img class="gc-cover" src="${g.img}" alt="${esc(g.name)}">
+    <div class="gc-body"><h3>${esc(g.name)}</h3><p>${esc(g.members)} · ${esc(g.desc)}</p>
+    <button class="btn ${g.joined?'btn-soft on':'btn-teal'}" data-join="${g.id}">${g.joined?'✓ عضو — اضغط للمغادرة':'انضم للمجموعة'}</button></div></div>`).join('');
+  $('#sideGroups').innerHTML = GROUPS.map(g=>`<button class="mini-row" data-nav="groups">${avatarHTML({img:g.img,name:g.name},38)}<span class="grow"><b>${esc(g.name)}</b><span>${esc(g.members)}</span></span></button>`).join('');
+}
+function renderPages(){
+  $('#pagesGrid').innerHTML = PAGES.map(p=>`<div class="card gcard">
+    <img class="gc-cover" src="${p.cover}" alt="${esc(p.name)}">
+    <div class="gc-body"><h3>${esc(p.name)} ${p.official?verifiedSVG:''}</h3><p>${esc(p.cat)}<br>${esc(p.desc)}</p>
+    <button class="btn ${p.followed?'btn-soft on':'btn-brand'}" data-follow="${p.id}">${p.followed?'✓ تتابعها':'متابعة الصفحة'}</button></div></div>`).join('');
+  $('#sidePages').innerHTML = PAGES.filter(p=>!p.followed).map(p=>`<div class="mini-row">${avatarHTML({img:p.img,name:p.name},38)}<span class="grow"><b>${esc(p.name)}</b><span>${esc(p.cat)}</span></span><button class="btn btn-soft sm" data-follow="${p.id}">متابعة</button></div>`).join('') || '<p class="demo-note">تتابع كل الصفحات المقترحة 🎉</p>';
+}
+document.addEventListener('click', e=>{
+  const j=e.target.closest('[data-join]');
+  if(j){ const g=GROUPS.find(x=>x.id===j.dataset.join); g.joined=!g.joined; renderGroups(); toast(g.joined?'انضممت إلى «'+g.name+'»':'غادرت «'+g.name+'»'); }
+  const f=e.target.closest('[data-follow]');
+  if(f){ const p=PAGES.find(x=>x.id===f.dataset.follow); p.followed=!p.followed; renderPages(); toast(p.followed?'أنت الآن تتابع «'+p.name+'»':'ألغيت متابعة «'+p.name+'»'); }
+});
+
+/* ================= Contacts & friend requests ================= */
+let friendReqs=[personById('layla'), personById('youssef')];
+function renderSide(){
+  $('#contactsList').innerHTML = PEOPLE.map(p=>`<button class="mini-row" data-openchat="${p.id}"><span style="position:relative;display:flex">${avatarHTML(p,38)}${p.online?'<span class="online-dot"></span>':''}</span><span class="grow"><b>${esc(p.name)}</b><span>${p.online?'متصل الآن':'غير متصل'}</span></span></button>`).join('');
+  $('#friendReqs').innerHTML = friendReqs.length? friendReqs.map(p=>`<div class="mini-row">${avatarHTML(p,42)}<span class="grow"><b>${esc(p.name)}</b><span>${esc(p.role)}</span></span></div><div style="display:flex;gap:7px;padding:2px 8px 8px"><button class="btn btn-brand sm" style="flex:1" data-accept="${p.id}">قبول</button><button class="btn btn-soft sm" style="flex:1" data-decline="${p.id}">حذف</button></div>`).join('') : '<p class="demo-note">لا توجد طلبات صداقة جديدة</p>';
+}
+document.addEventListener('click', e=>{
+  const ac=e.target.closest('[data-accept]');
+  if(ac){ const p=personById(ac.dataset.accept); friendReqs=friendReqs.filter(x=>x.id!==p.id); renderSide(); toast('أصبحت صديقًا لـ '+p.name+' (تجريبي)'); }
+  const dc=e.target.closest('[data-decline]');
+  if(dc){ friendReqs=friendReqs.filter(x=>x.id!==dc.dataset.decline); renderSide(); toast('تم حذف الطلب'); }
+  const oc=e.target.closest('[data-openchat]');
+  if(oc){ openDrawer(oc.dataset.openchat); }
+});
+
+/* ================= Notifications ================= */
+function renderNotifs(){
+  $('#notifList').innerHTML = notifs.map((n,i)=>{
+    let av;
+    if(n.who==='page') av=avatarHTML({img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=',name:'Karim Shehad AI Art'},44);
+    else if(n.who==='karim') av=avatarHTML({img:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=',name:'كريم'},44);
+    else av=avatarHTML(personById(n.who),44);
+    return `<button class="notif-item ${n.unread?'unread':''}" data-notif="${i}">${av}<span style="flex:1"><p>${esc(n.text)}</p><time>${esc(n.time)}</time></span>${n.unread?'<span class="notif-dot"></span>':''}</button>`;
+  }).join('');
+  const count=notifs.filter(n=>n.unread).length;
+  [$('#notifBadge'),$('#notifBadgeM')].forEach(b=>{ if(b){ b.textContent=count; b.style.display=count?'grid':'none'; } });
+}
+function toggleNotifs(force){
+  const p=$('#notifPanel'); const open = force!==undefined?force:!p.classList.contains('open');
+  p.classList.toggle('open', open);
+  if(open){ notifs.forEach(n=>n.unread=false); setTimeout(renderNotifs, 900); }
+}
+$('#notifBtn').onclick=e=>{ e.stopPropagation(); toggleNotifs(); };
+$('#bottomNotifBtn').onclick=()=>{ showView('feed'); toggleNotifs(true); window.scrollTo({top:0}); };
+document.addEventListener('click', e=>{ if(!e.target.closest('.notif-wrap') && !e.target.closest('#bottomNotifBtn')) $('#notifPanel').classList.remove('open'); });
+
+/* ================= Search ================= */
+const searchInput=$('#searchInput'), searchResults=$('#searchResults');
+searchInput.addEventListener('input', ()=>{
+  const q=searchInput.value.trim();
+  if(!q){ searchResults.classList.remove('open'); searchResults.innerHTML=''; return; }
+  const hits=[];
+  PEOPLE.filter(p=>p.name.includes(q)).forEach(p=>hits.push({label:p.name, type:'شخص · '+p.role, who:p, act:'person:'+p.id}));
+  PAGES.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())).forEach(p=>hits.push({label:p.name, type:'صفحة · '+p.cat, who:{img:p.img,name:p.name}, act:'pages'}));
+  GROUPS.filter(g=>g.name.includes(q)).forEach(g=>hits.push({label:g.name, type:'مجموعة · '+g.members, who:{img:g.img,name:g.name}, act:'groups'}));
+  posts.filter(p=>p.text.includes(q)).forEach(p=>hits.push({label:p.text.slice(0,60)+'…', type:'منشور · '+authorInfo(p).name, who:authorInfo(p), act:'feed'}));
+  searchResults.innerHTML = hits.length? hits.map((h,i)=>`<button class="sr-item" data-sr="${i}">${avatarHTML(h.who,38)}<span style="flex:1"><b style="display:block;font-size:14px">${esc(h.label)}</b><span class="sr-type">${esc(h.type)}</span></span></button>`).join('') : '<div class="sr-empty">لا توجد نتائج عن «'+esc(q)+'»</div>';
+  searchResults.classList.add('open');
+  searchResults.querySelectorAll('[data-sr]').forEach(b=>b.onclick=()=>{
+    const h=hits[+b.dataset.sr]; searchResults.classList.remove('open'); searchInput.value='';
+    if(h.act.startsWith('person:')) openPerson(h.act.split(':')[1]); else showView(h.act);
+  });
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.searchbox')) searchResults.classList.remove('open'); });
+
+/* ================= Messenger drawer ================= */
+let activeChat=null;
+function renderChatList(){
+  $('#chatList').style.display='block'; $('#chatView').classList.remove('open');
+  $('#chatList').innerHTML = CHATS.map(c=>{ const p=personById(c.pid); const last=c.msgs[c.msgs.length-1];
+    return `<button class="chat-row" data-chat="${c.pid}">${avatarHTML(p,48)}<span class="grow"><b>${esc(p.name)}</b><span>${last?esc(last.t):''}</span></span>${c.unread?`<span class="bdg" style="position:static;background:var(--badge);color:#fff;font-size:11px;font-weight:700;min-width:19px;height:19px;border-radius:999px;display:grid;place-items:center">${c.unread}</span>`:''}</button>`;
+  }).join('') + PEOPLE.filter(p=>!CHATS.find(c=>c.pid===p.id)).map(p=>`<button class="chat-row" data-chat="${p.id}">${avatarHTML(p,48)}<span class="grow"><b>${esc(p.name)}</b><span>ابدأ محادثة…</span></span></button>`).join('');
+  const total=CHATS.reduce((s,c)=>s+c.unread,0);
+  const mb=$('#msgBadge'); mb.textContent=total; mb.style.display=total?'grid':'none';
+}
+function openChat(pid){
+  const p=personById(pid); if(!p) return;
+  let chat=CHATS.find(c=>c.pid===pid);
+  if(!chat){ chat={pid, msgs:[], unread:0, reply:'أهلًا يا كريم! وصلتني رسالتك 👋'}; CHATS.unshift(chat); }
+  chat.unread=0; activeChat=chat;
+  $('#chatList').style.display='none'; $('#chatView').classList.add('open');
+  const av=$('#chatAv'); av.textContent=p.init; av.className='av-init '+p.color; av.style.cssText='width:38px;height:38px';
+  $('#chatName').textContent=p.name;
+  renderMsgs(); renderChatBadgeOnly();
+}
+function renderChatBadgeOnly(){ const total=CHATS.reduce((s,c)=>s+c.unread,0); const mb=$('#msgBadge'); mb.textContent=total; mb.style.display=total?'grid':'none'; }
+function renderMsgs(){
+  if(!activeChat) return;
+  $('#chatMsgs').innerHTML = activeChat.msgs.map(m=>`<div class="msg ${m.f}">${esc(m.t)}<time>${esc(m.time)}</time></div>`).join('') || '<p style="text-align:center;color:var(--muted)">ابدأ المحادثة بسلام 👋</p>';
+  $('#chatMsgs').scrollTop=$('#chatMsgs').scrollHeight;
+}
+document.addEventListener('click', e=>{
+  const cr=e.target.closest('[data-chat]'); if(cr) openChat(cr.dataset.chat);
+});
+$('#chatBack').onclick=()=>{ renderChatList(); };
+$('#chatForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const v=$('#chatInput').value.trim(); if(!v||!activeChat) return;
+  const now=new Date(); const time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  activeChat.msgs.push({f:'me', t:v, time}); $('#chatInput').value=''; renderMsgs();
+  const chat=activeChat;
+  setTimeout(()=>{ if(activeChat===chat) $('#typingInd').style.display='block'; }, 700);
+  setTimeout(()=>{ $('#typingInd').style.display='none'; chat.msgs.push({f:'them', t:chat.reply, time}); if(activeChat===chat) renderMsgs(); }, 2100);
+});
+let drawerHideTimer=null;
+function openDrawer(pid){
+  const d=$('#drawer');
+  clearTimeout(drawerHideTimer);
+  d.classList.add('shown'); $('#scrim').classList.add('open');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>d.classList.add('open')));
+  if(pid && personById(pid)) openChat(pid); else renderChatList();
+}
+function closeDrawer(){
+  const d=$('#drawer');
+  d.classList.remove('open'); $('#scrim').classList.remove('open');
+  clearTimeout(drawerHideTimer);
+  drawerHideTimer=setTimeout(()=>{ if(!d.classList.contains('open')) d.classList.remove('shown'); }, 280);
+}
+$('#msgBtn').onclick=()=>openDrawer();
+$('#chatMenuBtn').onclick=()=>openDrawer();
+$('#chatCtaBtn').onclick=()=>openDrawer();
+$('#drawerClose').onclick=closeDrawer;
+$('#scrim').onclick=closeDrawer;
+
+/* ================= Misc buttons ================= */
+$('#topAvatar').onclick=()=>showView('profile');
+$('#savedBtn').onclick=()=>toast(savedPosts.size? 'لديك '+savedPosts.size+' منشور محفوظ (في هذه الجلسة)' : 'لا توجد عناصر محفوظة بعد — احفظ منشورًا من قائمة •••');
+$('#profileMsgBtn').onclick=()=>openDrawer('sara');
+$('#personMsgBtn').onclick=()=>{ if(currentPerson) openDrawer(currentPerson.id); };
+$('#personAddBtn').onclick=function(){ this.textContent='✓ تم إرسال الطلب'; this.disabled=true; toast('تم إرسال طلب الصداقة (تجريبي)'); };
+let following=false;
+$('#profileFollowBtn').onclick=function(){ following=!following; this.textContent=following?'✓ تتابع حسابك':'متابعة'; toast(following?'أنت تتابع حساب Karim Shehad AI Art':'ألغيت المتابعة'); };
+$('#profileShareBtn').onclick=()=>toast('رابط الملف الشخصي جاهز للمشاركة (تجريبي)');
+$$('#profileTabs button').forEach(b=>b.onclick=()=>{
+  $$('#profileTabs button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  ['posts','photos','about'].forEach(t=>{ const el=$('#profileTab-'+t); if(el) el.style.display = t===b.dataset.ptab ? (t==='posts'?'flex':'block') : 'none'; });
+});
+$('#themeBtn').onclick=()=>{
+  const cur=document.documentElement.dataset.theme;
+  const dark = cur? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.dataset.theme = dark? 'light':'dark';
+  toast(dark? 'تم التبديل للوضع النهاري ☀️':'تم التبديل للوضع الليلي 🌙');
+};
+
+/* ================= Init ================= */
+renderStories(); renderFeed(); renderProfilePosts(); renderGroups(); renderPages(); renderSide(); renderNotifs(); renderChatList();
+</script>
+
+<!-- ===== Firebase (real accounts + feed) — compat classic builds, same project as Shehad Chat ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $ = function(s){ return document.querySelector(s); };
+  var firebaseConfig = { apiKey: "AIzaSyCRkEiO__No1P8tNmx95uHNtVFwZeeb_l4", authDomain: "shehad-chat.firebaseapp.com", databaseURL: "https://shehad-chat-default-rtdb.firebaseio.com", projectId: "shehad-chat", storageBucket: "shehad-chat.firebasestorage.app", messagingSenderId: "1031463412890", appId: "1:1031463412890:web:d48f776e6349f0d1a32b23" };
+  var authScreen = $("#authScreen"), authErr = $("#authErr");
+  function showErr(m){ authErr.textContent = m; authErr.classList.add("show"); }
+  function hideErr(){ authErr.classList.remove("show"); }
+  function openAuth(){ authScreen.classList.add("open"); }
+  function rToast(m){ if(window.toast) toast(m); }
+  $("#realLoginBtn").addEventListener("click", openAuth);
+  $("#realBannerBtn").addEventListener("click", openAuth);
+  $("#authDemo").addEventListener("click", function(){ authScreen.classList.remove("open"); });
+
+  if(typeof firebase === "undefined"){
+    $("#realBannerText").innerHTML = "⚠️ <b>تعذّر تحميل Firebase</b> — تحقق من اتصال الإنترنت وحدّث الصفحة. تقدر تكمل في الوضع التجريبي بالأسفل.";
+    $("#authDemo").addEventListener("click", function(){ authScreen.classList.remove("open"); });
+    openAuth();
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db = firebase.database();
+  var TS = firebase.database.ServerValue.TIMESTAMP;
+
+  var me = null;                 // {uid, name, email}
+  var directory = {};            // uid -> {name, online, lastSeen}
+  var myFriends = {};            // uid -> true
+  var mySentReqs = {};           // uid -> true (requests I sent)
+  var myInReqs = {};             // uid -> {name, createdAt}
+  var postsRef = null, dirRef = null, reqRef = null, frRef = null, sentRef = null;
+  var mode = "signup", pendingName = "";
+
+  /* ---------- Auth UI ---------- */
+  function setMode(m){
+    mode = m; hideErr();
+    $("#authNameWrap").style.display = m === "signup" ? "block" : "none";
+    $("#authSubmit").textContent = m === "signup" ? "إنشاء حساب جديد" : "تسجيل الدخول";
+    $("#authToggle").textContent = m === "signup" ? "عندي حساب بالفعل — تسجيل الدخول" : "معنديش حساب — إنشاء حساب جديد";
+    $("#authPass").setAttribute("autocomplete", m === "signup" ? "new-password" : "current-password");
+  }
+  $("#authToggle").addEventListener("click", function(){ setMode(mode === "signup" ? "signin" : "signup"); });
+  function errText(e){
+    var c = (e && e.code) || "";
+    if(c.indexOf("email-already-in-use") > -1) return "الإيميل ده مسجّل بالفعل — جرّب تسجيل الدخول (نفس حساب Shehad Chat لو عملته هناك).";
+    if(c.indexOf("wrong-password") > -1 || c.indexOf("invalid-credential") > -1) return "الإيميل أو كلمة المرور غير صحيحة.";
+    if(c.indexOf("user-not-found") > -1) return "مفيش حساب بالإيميل ده — اعمل حساب جديد الأول.";
+    if(c.indexOf("weak-password") > -1) return "كلمة المرور ضعيفة — لازم ٦ أحرف على الأقل.";
+    if(c.indexOf("invalid-email") > -1) return "صيغة الإيميل غير صحيحة.";
+    if(c.indexOf("network") > -1) return "مشكلة في الاتصال بالإنترنت — حاول تاني.";
+    return "حصلت مشكلة: " + ((e && e.message) || c || "غير معروفة");
+  }
+  $("#authSubmit").addEventListener("click", function(){
+    hideErr();
+    var email = $("#authEmail").value.trim().toLowerCase();
+    var pass = $("#authPass").value;
+    var name = $("#authName").value.trim();
+    if(!email || !pass){ showErr("اكتب الإيميل وكلمة المرور."); return; }
+    if(mode === "signup" && !name){ showErr("اكتب اسمك الظاهر — ده اللي الناس هتشوفه."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "جارٍ الاتصال…";
+    var done = function(){ btn.disabled = false; setMode(mode); };
+    if(mode === "signup"){
+      pendingName = name;
+      auth.createUserWithEmailAndPassword(email, pass).then(function(cred){
+        var uid = cred.user.uid;
+        return db.ref("users/" + uid).set({ name: name, email: email, createdAt: TS }).then(function(){
+          /* Public directory entry: name + presence only, NO email — same model as Shehad Chat */
+          return db.ref("directory/" + uid).set({ name: name, online: true, lastSeen: TS });
+        });
+      }).then(done).catch(function(e){ done(); showErr(errText(e)); });
+    } else {
+      auth.signInWithEmailAndPassword(email, pass).then(done).catch(function(e){ done(); showErr(errText(e)); });
+    }
+  });
+  $("#authPass").addEventListener("keydown", function(e){ if(e.key === "Enter") $("#authSubmit").click(); });
+
+  /* ---------- Session ---------- */
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      db.ref("users/" + user.uid).once("value").then(function(snap){
+        var p = snap.val();
+        if(!p){
+          p = { name: pendingName || (user.email || "مستخدم").split("@")[0], email: user.email, createdAt: Date.now() };
+          db.ref("users/" + user.uid).set({ name: p.name, email: p.email, createdAt: TS });
+          db.ref("directory/" + user.uid).set({ name: p.name, online: true, lastSeen: TS });
+        }
+        me = { uid: user.uid, name: p.name || "مستخدم", email: p.email || user.email };
+        afterLogin();
+      });
+    } else {
+      me = null; window.SocialFB.me = null;
+      detachAll();
+      $("#realSignedIn").hidden = true;
+      $("#realSignedOut").hidden = false;
+      $("#realUsersCard").hidden = true;
+      $("#realReqCard").hidden = true;
+      $("#realFeed").innerHTML = "";
+      $("#realBannerText").innerHTML = "🔴 <b>الموجز الحقيقي:</b> سجّل دخولك بحسابك (نفس حساب Shehad Chat) عشان تشوف منشورات المستخدمين الحقيقيين وتنشر لهم.";
+      $("#realBannerBtn").style.display = "";
+      openAuth();
+    }
+  });
+  $("#realLogout").addEventListener("click", function(){
+    if(me) db.ref("directory/" + me.uid).update({ online: false, lastSeen: TS });
+    auth.signOut();
+  });
+  function detachAll(){
+    [postsRef, dirRef, reqRef, frRef, sentRef].forEach(function(r){ if(r) r.off(); });
+    postsRef = dirRef = reqRef = frRef = sentRef = null;
+  }
+  function afterLogin(){
+    window.SocialFB.me = me;
+    authScreen.classList.remove("open");
+    $("#realSignedIn").hidden = false;
+    $("#realSignedOut").hidden = true;
+    $("#realMeName").textContent = me.name;
+    $("#realMeMail").textContent = me.email || "";
+    $("#realMeAv").textContent = (me.name || "؟").trim().charAt(0);
+    $("#realBannerText").innerHTML = "🟢 <b>الموجز الحقيقي</b> — أنت مسجّل دخولك باسم <b>" + esc(me.name) + "</b>. كل منشور تنشره من صندوق النشر فوق بيظهر فورًا لكل المستخدمين.";
+    $("#realBannerBtn").style.display = "none";
+    $("#composerText").placeholder = "بماذا تفكّر يا " + me.name.split(" ")[0] + "؟ منشورك هيوصل لكل مستخدمي المنصة…";
+    var myDir = db.ref("directory/" + me.uid);
+    myDir.update({ name: me.name, online: true, lastSeen: TS });
+    myDir.child("online").onDisconnect().set(false);
+    myDir.child("lastSeen").onDisconnect().set(TS);
+    loadPosts(); loadDirectory(); loadSocialGraph();
+    rToast("أهلًا بيك يا " + me.name + " — دخلت بحسابك الحقيقي ✅");
+  }
+
+  /* ---------- Helpers ---------- */
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  var COLORS = ["c1","c2","c3","c4","c5","c6"];
+  function colorFor(uid){ var h = 0; for(var i = 0; i < uid.length; i++) h = (h * 31 + uid.charCodeAt(i)) >>> 0; return COLORS[h % COLORS.length]; }
+  function avFor(uid, name, size){
+    return '<span class="av-init ' + colorFor(uid) + '" style="width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size * 0.42) + 'px">' + esc((name || "؟").trim().charAt(0)) + "</span>";
+  }
+  function fmtRel(ts){
+    if(!ts) return "الآن";
+    var s = Math.floor((Date.now() - ts) / 1000);
+    if(s < 60) return "الآن";
+    var m = Math.floor(s / 60); if(m < 60) return "قبل " + m + " دقيقة";
+    var h = Math.floor(m / 60); if(h < 24) return "قبل " + h + " ساعة";
+    var d = Math.floor(h / 24); if(d < 30) return "قبل " + d + " يوم";
+    return new Date(ts).toLocaleDateString("ar-EG");
+  }
+
+  /* ---------- Real posts (/posts) ---------- */
+  function loadPosts(){
+    postsRef = db.ref("posts").orderByChild("createdAt").limitToLast(60);
+    postsRef.on("value", function(snap){
+      var val = snap.val() || {};
+      var arr = Object.keys(val).map(function(id){ var p = val[id]; p._id = id; return p; });
+      arr.sort(function(a, b){ return (b.createdAt || 0) - (a.createdAt || 0); });
+      renderRealFeed(arr);
+    });
+  }
+  function renderRealFeed(arr){
+    var box = $("#realFeed");
+    if(!arr.length){
+      box.innerHTML = '<div class="card empty-note">لسه مفيش منشورات حقيقية — كن أول واحد ينشر من صندوق النشر فوق، وهيظهر عند كل المستخدمين فورًا.</div>';
+      return;
+    }
+    box.innerHTML = arr.map(realPostHTML).join("");
+  }
+  function realPostHTML(p){
+    var likes = p.likes || {};
+    var likeCount = Object.keys(likes).length;
+    var liked = !!(me && likes[me.uid]);
+    var comments = p.comments || {};
+    var cArr = Object.keys(comments).map(function(cid){ var c = comments[cid]; c._cid = cid; return c; });
+    cArr.sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
+    var mine = me && p.authorId === me.uid;
+    return '<article class="card post" id="rpost-' + p._id + '">'
+      + '<div class="post-head">' + avFor(p.authorId, p.authorName, 44)
+      + '<div class="grow"><b>' + esc(p.authorName) + ' <span class="real-tag">حقيقي</span></b>'
+      + '<div class="meta"><span>' + fmtRel(p.createdAt) + '</span>·<span>عام</span></div></div>'
+      + (mine ? '<button class="btn btn-soft sm" data-rdel="' + p._id + '">حذف</button>' : '')
+      + '</div>'
+      + '<div class="post-text">' + esc(p.text || "") + '</div>'
+      + (p.imageUrl ? '<img class="post-img" src="' + esc(p.imageUrl) + '" alt="صورة المنشور" loading="lazy">' : '')
+      + '<div class="post-counts"><span>👍 <span>' + likeCount + '</span> إعجاب</span><span><span>' + cArr.length + '</span> تعليق</span></div>'
+      + '<div class="post-actions">'
+      + '<button class="act-btn ' + (liked ? "liked" : "") + '" data-rlike="' + p._id + '">👍 ' + (liked ? "أعجبك" : "أعجبني") + '</button>'
+      + '<button class="act-btn" data-rctoggle="' + p._id + '">💬 تعليق</button>'
+      + '</div>'
+      + '<div class="comments" id="rcomments-' + p._id + '">'
+      + '<div>' + cArr.map(function(c){
+          return '<div class="comment">' + avFor(c.authorId, c.authorName, 34) + '<div class="bubble"><b>' + esc(c.authorName) + '</b><p>' + esc(c.text) + '</p></div></div>';
+        }).join("") + '</div>'
+      + '<form class="comment-form" data-rcform="' + p._id + '">' + avFor(me.uid, me.name, 34)
+      + '<input placeholder="اكتب تعليقًا حقيقيًا…" aria-label="اكتب تعليقًا"><button class="btn btn-teal sm" type="submit">نشر</button></form>'
+      + '</div></article>';
+  }
+  function publishPost(text, imageUrl){
+    if(!me) return;
+    db.ref("posts").push({
+      authorId: me.uid, authorName: me.name, text: text || "",
+      imageUrl: imageUrl || "", createdAt: TS
+    }).then(function(){ rToast("تم نشر منشورك الحقيقي — وصل لكل المستخدمين ✅"); })
+      .catch(function(){ rToast("حصلت مشكلة في النشر — حاول تاني"); });
+  }
+  window.SocialFB = { me: null, publishPost: publishPost };
+
+  document.addEventListener("click", function(e){
+    if(!me) return;
+    var like = e.target.closest("[data-rlike]");
+    if(like){
+      var pid = like.getAttribute("data-rlike");
+      var ref = db.ref("posts/" + pid + "/likes/" + me.uid);
+      ref.once("value").then(function(s){ if(s.val()) ref.remove(); else ref.set(true); });
+      return;
+    }
+    var tg = e.target.closest("[data-rctoggle]");
+    if(tg){ var box = $("#rcomments-" + tg.getAttribute("data-rctoggle")); if(box) box.classList.toggle("open"); return; }
+    var del = e.target.closest("[data-rdel]");
+    if(del){ db.ref("posts/" + del.getAttribute("data-rdel")).remove().then(function(){ rToast("تم حذف منشورك"); }); return; }
+  });
+  document.addEventListener("submit", function(e){
+    var f = e.target.closest("[data-rcform]");
+    if(!f || !me) return;
+    e.preventDefault();
+    var pid = f.getAttribute("data-rcform");
+    var input = f.querySelector("input"); var v = input.value.trim(); if(!v) return;
+    db.ref("posts/" + pid + "/comments").push({ authorId: me.uid, authorName: me.name, text: v, createdAt: TS })
+      .then(function(){ input.value = ""; var box = $("#rcomments-" + pid); if(box) box.classList.add("open"); rToast("تم نشر تعليقك الحقيقي"); });
+  });
+
+  /* ---------- Real users, friend requests, follows (/directory, /friendRequests, /friends) ---------- */
+  function loadDirectory(){
+    dirRef = db.ref("directory");
+    dirRef.on("value", function(snap){
+      directory = snap.val() || {};
+      renderRealUsers();
+    });
+  }
+  function loadSocialGraph(){
+    reqRef = db.ref("friendRequests/" + me.uid);
+    reqRef.on("value", function(snap){ myInReqs = snap.val() || {}; renderRealUsers(); renderRealReqs(); });
+    frRef = db.ref("friends/" + me.uid);
+    frRef.on("value", function(snap){ myFriends = snap.val() || {}; renderRealUsers(); });
+    sentRef = db.ref("sentRequests/" + me.uid);
+    sentRef.on("value", function(snap){ mySentReqs = snap.val() || {}; renderRealUsers(); });
+  }
+  function renderRealUsers(){
+    if(!me) return;
+    var box = $("#realUsers"); if(!box) return;
+    var others = Object.keys(directory).filter(function(uid){ return uid !== me.uid; });
+    $("#realUsersCard").hidden = false;
+    if(!others.length){
+      box.innerHTML = '<p class="demo-note">لسه مفيش مستخدمين تانيين مسجّلين — ادعُ أصحابك يعملوا حساب (هنا أو في Shehad Chat بنفس الإيميل) وهيظهروا هنا فورًا.</p>';
+      return;
+    }
+    box.innerHTML = others.map(function(uid){
+      var u = directory[uid];
+      var state;
+      if(myFriends[uid]) state = '<span class="real-tag">صديق ✓</span>';
+      else if(mySentReqs[uid]) state = '<button class="btn btn-soft sm" disabled>تم الإرسال…</button>';
+      else if(myInReqs[uid]) state = '<button class="btn btn-brand sm" data-raccept="' + uid + '">قبول الطلب</button>';
+      else state = '<button class="btn btn-teal sm" data-radd="' + uid + '">إضافة صديق</button>';
+      return '<div class="acct-row">' + avFor(uid, u.name, 40)
+        + '<span class="grow"><b>' + esc(u.name) + '</b><span>' + (u.online ? "متصل الآن" : "غير متصل") + '</span></span>' + state + '</div>';
+    }).join("");
+  }
+  function renderRealReqs(){
+    if(!me) return;
+    var ids = Object.keys(myInReqs);
+    $("#realReqCard").hidden = !ids.length;
+    $("#realReqs").innerHTML = ids.length ? ids.map(function(uid){
+      var r = myInReqs[uid];
+      return '<div class="acct-row">' + avFor(uid, r.name, 40)
+        + '<span class="grow"><b>' + esc(r.name || "مستخدم") + '</b><span>طلب صداقة · ' + fmtRel(r.createdAt) + '</span></span></div>'
+        + '<div style="display:flex;gap:7px;padding:2px 8px 8px"><button class="btn btn-brand sm" style="flex:1" data-raccept="' + uid + '">قبول</button><button class="btn btn-soft sm" style="flex:1" data-rdecline="' + uid + '">حذف</button></div>';
+    }).join("") : '<p class="demo-note">لا توجد طلبات جديدة</p>';
+  }
+  document.addEventListener("click", function(e){
+    if(!me) return;
+    var add = e.target.closest("[data-radd]");
+    if(add){
+      var to = add.getAttribute("data-radd");
+      var u = directory[to] || {};
+      db.ref("friendRequests/" + to + "/" + me.uid).set({ name: me.name, createdAt: TS });
+      db.ref("sentRequests/" + me.uid + "/" + to).set(true);
+      rToast("تم إرسال طلب الصداقة إلى " + (u.name || "المستخدم"));
+      return;
+    }
+    var acc = e.target.closest("[data-raccept]");
+    if(acc){
+      var from = acc.getAttribute("data-raccept");
+      var patch = {};
+      patch["friends/" + me.uid + "/" + from] = true;
+      patch["friends/" + from + "/" + me.uid] = true;
+      db.ref().update(patch).then(function(){
+        db.ref("friendRequests/" + me.uid + "/" + from).remove();
+        db.ref("sentRequests/" + from + "/" + me.uid).remove();
+        rToast("بقيتوا أصدقاء فعليًا على المنصة 🎉");
+      });
+      return;
+    }
+    var dec = e.target.closest("[data-rdecline]");
+    if(dec){
+      var f2 = dec.getAttribute("data-rdecline");
+      db.ref("friendRequests/" + me.uid + "/" + f2).remove();
+      db.ref("sentRequests/" + f2 + "/" + me.uid).remove();
+      rToast("تم حذف الطلب");
+      return;
+    }
+  });
+
+  /* Keep SocialFB.me in sync for the composer */
+  setInterval(function(){ window.SocialFB.me = me; }, 500);
+})();
+</script>
+</body>
+</html>
